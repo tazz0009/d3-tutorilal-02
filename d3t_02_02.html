@@ -1,0 +1,42 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D3 in Action Chapter 1 - Example 3</title>
+    <script src="https://d3js.org/d3.v6.js"></script>
+  </head>
+  <style>
+    body {
+      margin: 0px;
+      overflow: hidden;
+    }
+    rect {
+      fill: steelblue;
+    }
+    text {
+      font-size: 1.4em;
+    }
+  </style>
+  <body>
+    <svg width="960" height="500"></svg>
+  </body>
+  <footer>
+    <script>
+      var svg = d3.select("svg");
+      var width = 60;
+      var height = 250;
+      var margin = { left: 30, top: 10, right: 10, bottom: 10 };
+
+      var yScale = d3
+        .scaleLinear()
+        .domain([0, 50])
+        .range([height - margin.bottom, margin.top]);
+
+      svg
+        .append("g")
+        .call(d3.axisLeft(yScale))
+        .attr("transform", `translate(${margin.left}, 0)`);
+    </script>
+  </footer>
+</html>

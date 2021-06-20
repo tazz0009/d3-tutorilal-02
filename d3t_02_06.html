@@ -1,0 +1,30 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D3 in Action Chapter 1 - Example 3</title>
+    <script src="https://d3js.org/d3.v6.js"></script>
+  </head>
+  <style></style>
+  <body>
+    <p></p>
+  </body>
+  <footer>
+    <script>
+      var ArrayofData = [5, 10, 15, 20, 25];
+      var D3DataConnection = d3
+        .select("p")
+        .selectAll("p")
+        .data(ArrayofData)
+        .enter()
+        .append("p")
+        .text(function (d) {
+          return "I can count up to " + d;
+        })
+        .style("color", function (d) {
+          return d > 15 ? "red" : "black";
+        });
+    </script>
+  </footer>
+</html>

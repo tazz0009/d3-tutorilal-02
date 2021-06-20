@@ -1,0 +1,70 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D3 in Action Chapter 1 - Example 3</title>
+    <script src="https://d3js.org/d3.v6.js"></script>
+  </head>
+  <style></style>
+  <body>
+    <div class="parent-container"></div>
+  </body>
+  <footer>
+    <script>
+      var width = 500;
+      var height = 250;
+      var svg = d3
+        .select(".parent-container")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      var ArrayofData = [
+        50, 90, 120, 250, 200, 150, 100, 50, 10, 40, 80, 60, 40, 70, 50, 90,
+        120, 60, 40, 70, 50, 60, 40, 70
+      ];
+
+      var margin = { left: 30, top: 10, right: 10, bottom: 20 };
+      var xScale = d3
+        .scaleLinear()
+        .domain([0, ArrayofData.length])
+        .range([margin.left, width - margin.right]); // [30, 500 - 10]
+
+      var yScale = d3
+        .scaleLinear()
+        .domain([0, d3.max(ArrayofData)])
+        .range([height - margin.bottom, margin.top]); // [250 - 10, 10]
+
+      svg
+        .append("g")
+        .call(d3.axisBottom(xScale))
+        .attr("transform", `translate(0, ${height - margin.bottom})`);
+
+      svg
+        .append("g")
+        .call(d3.axisLeft(yScale))
+        .attr("transform", `translate(${margin.left}, 0)`);
+
+      svg
+        .append("g")
+        .selectAll("rect")
+        .data(ArrayofData)
+        //.enter()
+        //.append("rect")
+        .join("rect")
+        .attr("x", function (d, i) {
+          return xScale(i);
+        })
+        .attr("y", function (d) {
+          return yScale(d);
+        })
+        .attr("width", width / ArrayofData.length - 4)
+        .attr("height", function (d) {
+          return height - yScale(d) - margin.bottom;
+        })
+        .attr("fill", "steelblue")
+        .attr("transform", `translate(2, 0)`);
+    </script>
+  </footer>
+</html>

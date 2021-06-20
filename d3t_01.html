@@ -1,0 +1,90 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D3 in Action Chapter 1 - Example 3</title>
+    <script src="https://d3js.org/d3.v6.js"></script>
+  </head>
+  <style>
+    body {
+      margin: 0px;
+      overflow: hidden;
+    }
+    rect {
+      fill: steelblue;
+    }
+    text {
+      font-size: 1.4em;
+    }
+  </style>
+  <body>
+    <svg width="960" height="500"></svg>
+  </body>
+  <footer>
+    <script>
+      var svg = d3.select("svg");
+      var width = +svg.attr("width");
+      var height = +svg.attr("height");
+
+      d3.csv("data.csv").then(function (data) {
+        data.forEach(function (d) {
+          d.population = +d.population * 1000;
+        });
+        render(data);
+      });
+
+      function render(data) {
+        var margin = { top: 20, right: 40, bottom: 20, left: 100 };
+        var innerWidth = width - margin.right - margin.left;
+        var innerHeight = height - margin.top - margin.bottom;
+
+        // scale : 어떤 범위의 숫자를 다른 범위의 숫자로 변경해주는 함수
+        // domain이 실제 값의 범위
+        // range가 백분률처럼 변환하고 싶은 값의 범위
+        var xScale = d3
+          .scaleLinear()
+          .domain([
+            0,
+            d3.max(data, function (d) {
+              return d.population;
+            })
+          ])
+          .range([0, innerWidth]);
+
+        // scaleBand : 균일한 band(묶음, 단)으로 연속 range를 나눔
+        var yScale = d3
+          .scaleBand()
+          .domain(
+            data.map(function (d) {
+              return d.country;
+            })
+          )
+          .range([0, innerHeight])
+          .padding(0.1);
+
+        var g = svg
+          .append("g")
+          .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+        // axis : 차트에서 축은 너무나 자주 사용되므로 축을 생성하는 기능
+        g.append("g").call(d3.axisLeft(yScale));
+        g.append("g")
+          .call(d3.axisBottom(xScale))
+          .attr("transform", `translate(0, ${innerHeight})`);
+
+        g.selectAll("rect")
+          .data(data)
+          .enter()
+          .append("rect")
+          .attr("y", function (d) {
+            return yScale(d.country);
+          })
+          .attr("width", function (d) {
+            return xScale(d.population);
+          })
+          .attr("height", yScale.bandwidth());
+      }
+    </script>
+  </footer>
+</html>

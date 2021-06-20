@@ -1,0 +1,28 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D3 in Action Chapter 1 - Example 3</title>
+    <script src="https://d3js.org/d3.v6.js"></script>
+  </head>
+  <style></style>
+  <body>
+    <div class="parent-container"></div>
+  </body>
+  <footer>
+    <script>
+      var d3Selection = d3
+        .select(".parent-container")
+        .append("svg")
+        .attr("width", 100)
+        .attr("height", 100);
+
+      var d3AppendedCircle = d3Selection.append("circle");
+      d3AppendedCircle.attr("cx", 50);
+      d3AppendedCircle.attr("cy", 50);
+      d3AppendedCircle.attr("r", 25);
+      d3AppendedCircle.attr("fill", "purple");
+    </script>
+  </footer>
+</html>
