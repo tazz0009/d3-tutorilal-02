@@ -1,0 +1,282 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D3 in Action Chapter 1 - Example 3</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://d3js.org/d3.v6.js"></script>
+  </head>
+  <style>
+    body {
+      margin: 0 14px;
+      font-family: "Source Serif Pro", Iowan Old Style, Apple Garamond,
+        Palatino Linotype, Times New Roman, "Droid Serif", Times, serif,
+        Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+      font-size: 17px;
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased;
+      color: #1b1e23;
+    }
+    .observablehq {
+      position: relative;
+      margin: 17px 0;
+      min-height: 33px;
+    }
+    style attribute {
+      font: 12px var(--sans-serif);
+      display: flex;
+      height: 33px;
+      align-items: center;
+    }
+  </style>
+  <body>
+    <div class="observablehq" dir="auto" style="margin-bottom: 17px">
+      <form
+        style="
+          font: 12px var(--sans-serif);
+          display: flex;
+          height: 33px;
+          align-items: center;
+        "
+      >
+        <label
+          style="margin-right: 1em; display: inline-flex; align-items: center"
+        >
+          <input
+            type="radio"
+            name="radio"
+            value="absolute"
+            style="margin-right: 0.5em"
+          />
+          Absolute change
+        </label>
+        <label
+          style="margin-right: 1em; display: inline-flex; align-items: center"
+        >
+          <input
+            type="radio"
+            name="radio"
+            value="relative"
+            style="margin-right: 0.5em"
+            checked="checked"
+          />
+          Relative change
+        </label>
+      </form>
+    </div>
+    <div class="parent-container"></div>
+  </body>
+  <footer>
+    <script>
+      var dataR = [
+        { name: "Puerto Rico", value: -0.14281404556189306 },
+        { name: "West Virginia", value: -0.032881380080021845 },
+        { name: "Illinois", value: -0.01237748849783861 },
+        { name: "Vermont", value: -0.0027998804617245794 },
+        { name: "Connecticut", value: -0.0024649582817701924 },
+        { name: "Mississippi", value: 0.0029831863814104216 },
+        { name: "New York", value: 0.0038940346170125433 },
+        { name: "Rhode Island", value: 0.00645469599559933 },
+        { name: "Pennsylvania", value: 0.007841838131266592 },
+        { name: "New Jersey", value: 0.010270369501725113 },
+        { name: "Michigan", value: 0.010443217276226168 },
+        { name: "Maine", value: 0.011932750208715854 },
+        { name: "Ohio", value: 0.013227230710447463 },
+        { name: "New Mexico", value: 0.018283985996360684 },
+        { name: "Kansas", value: 0.021098321205081597 },
+        { name: "Wisconsin", value: 0.0238171854124487 },
+        { name: "Missouri", value: 0.024795927550961966 },
+        { name: "Louisiana", value: 0.025460518130874767 },
+        { name: "Alabama", value: 0.025827577087939584 },
+        { name: "Wyoming", value: 0.026849364649608073 },
+        { name: "Kentucky", value: 0.029567907024227267 },
+        { name: "Alaska", value: 0.030009954507758743 },
+        { name: "New Hampshire", value: 0.03284617195986236 },
+        { name: "Arkansas", value: 0.03494851364133011 },
+        { name: "Iowa", value: 0.03568691107897799 },
+        { name: "Indiana", value: 0.038313477185145384 },
+        { name: "Hawaii", value: 0.04085198790561795 },
+        { name: "Maryland", value: 0.04713354967617855 },
+        { name: "Oklahoma", value: 0.05481225297232917 },
+        { name: "Nebraska", value: 0.05917131576195245 },
+        { name: "California", value: 0.06060203750293622 },
+        { name: "Massachusetts", value: 0.061377026706919406 },
+        { name: "Minnesota", value: 0.06329406995762572 },
+        { name: "Virginia", value: 0.06680332417450566 },
+        { name: "Tennessee", value: 0.07675085741569042 },
+        { name: "Montana", value: 0.08021204449093657 },
+        { name: "Delaware", value: 0.08444941387674372 },
+        { name: "South Dakota", value: 0.08656439607949103 },
+        { name: "Georgia", value: 0.09597474228277994 },
+        { name: "North Carolina", value: 0.09990065526832778 },
+        { name: "Oregon", value: 0.10092809483711356 },
+        { name: "South Carolina", value: 0.11314785171502179 },
+        { name: "Washington", value: 0.13240355474129084 },
+        { name: "North Dakota", value: 0.13302437885728474 },
+        { name: "Arizona", value: 0.13871990640825893 },
+        { name: "Idaho", value: 0.1400660380126845 },
+        { name: "Nevada", value: 0.14056575861740808 },
+        { name: "Florida", value: 0.14235321900442044 },
+        { name: "Colorado", value: 0.14506096004212204 },
+        { name: "Texas", value: 0.15312126064715756 },
+        { name: "Utah", value: 0.1599462351002303 },
+        { name: "District of Columbia", value: 0.1728802123236107 }
+      ];
+
+      var dataA = [
+        { name: "Puerto Rico", value: -532095 },
+        { name: "Illinois", value: -158811 },
+        { name: "West Virginia", value: -60929 },
+        { name: "Connecticut", value: -8810 },
+        { name: "Vermont", value: -1752 },
+        { name: "Rhode Island", value: 6794 },
+        { name: "Mississippi", value: 8852 },
+        { name: "Wyoming", value: 15133 },
+        { name: "Maine", value: 15851 },
+        { name: "Alaska", value: 21314 },
+        { name: "New Mexico", value: 37650 },
+        { name: "New Hampshire", value: 43241 },
+        { name: "Hawaii", value: 55571 },
+        { name: "Kansas", value: 60196 },
+        { name: "South Dakota", value: 70479 },
+        { name: "New York", value: 75459 },
+        { name: "Delaware", value: 75830 },
+        { name: "Montana", value: 79363 },
+        { name: "North Dakota", value: 89471 },
+        { name: "New Jersey", value: 90296 },
+        { name: "Pennsylvania", value: 99610 },
+        { name: "Arkansas", value: 101907 },
+        { name: "Michigan", value: 103217 },
+        { name: "District of Columbia", value: 104026 },
+        { name: "Nebraska", value: 108067 },
+        { name: "Iowa", value: 108715 },
+        { name: "Louisiana", value: 115422 },
+        { name: "Alabama", value: 123449 },
+        { name: "Kentucky", value: 128306 },
+        { name: "Wisconsin", value: 135448 },
+        { name: "Missouri", value: 148501 },
+        { name: "Ohio", value: 152596 },
+        { name: "Oklahoma", value: 205620 },
+        { name: "Idaho", value: 219565 },
+        { name: "Indiana", value: 248417 },
+        { name: "Maryland", value: 272128 },
+        { name: "Minnesota", value: 335707 },
+        { name: "Nevada", value: 379605 },
+        { name: "Oregon", value: 386663 },
+        { name: "Massachusetts", value: 401874 },
+        { name: "Utah", value: 442073 },
+        { name: "Tennessee", value: 487069 },
+        { name: "South Carolina", value: 523350 },
+        { name: "Virginia", value: 534495 },
+        { name: "Colorado", value: 729540 },
+        { name: "Arizona", value: 886700 },
+        { name: "Washington", value: 890353 },
+        { name: "Georgia", value: 929770 },
+        { name: "North Carolina", value: 952601 },
+        { name: "California", value: 2257700 },
+        { name: "Florida", value: 2676427 },
+        { name: "Texas", value: 3850320 }
+      ];
+
+      var metric = $('input[name="radio"]:checked').val();
+      var data = metric === "absolute" ? dataA : dataR;
+      console.log("metric", metric);
+
+      var barHeight = 25;
+      var margin = { top: 30, right: 60, bottom: 10, left: 60 };
+      var color = "steelblue";
+      var format = d3.format(metric === "absolute" ? "+,d" : "+,.0%");
+      var tickFormat =
+        metric === "absolute" ? d3.formatPrefix("+.1", 1e6) : format;
+
+      var width = 1000;
+      var height =
+        Math.ceil((data.length + 0.1) * barHeight) + margin.top + margin.bottom;
+
+      // x축 스케일 세팅
+      var x = d3
+        .scaleLinear()
+        .domain(d3.extent(data, (d) => d.value)) // extent : [최소, 최대]
+        .rangeRound([margin.left, width - margin.right]);
+
+      // x축 세팅
+      var xAxis = function (g) {
+        return g
+          .attr("transform", `translate(0,${margin.top})`)
+          .call(
+            d3
+              .axisTop(x)
+              .ticks(width / 80)
+              .tickFormat(tickFormat)
+          )
+          .call((g) => g.select(".domain").remove());
+      };
+
+      // y축 스케일 세팅
+      var y = d3
+        .scaleBand()
+        .domain(d3.range(data.length))
+        .rangeRound([margin.top, height - margin.bottom])
+        .padding(0.1);
+
+      // y축 세팅
+      var yAxis = (g) =>
+        g
+          .attr("transform", `translate(${x(0)},0)`)
+          .call(
+            d3
+              .axisLeft(y)
+              .tickFormat((i) => data[i].name)
+              .tickSize(0)
+              .tickPadding(6)
+          )
+          .call((g) =>
+            g
+              .selectAll(".tick text")
+              .filter((i) => data[i].value < 0)
+              .attr("text-anchor", "start")
+              .attr("x", 6)
+          );
+
+      var svg = d3
+        .select(".parent-container")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      svg
+        .append("g")
+        .attr("fill", color)
+        .selectAll("rect")
+        .data(data)
+        .join("rect")
+        .attr("fill", (d) => d3.schemeSet1[d.value > 0 ? 1 : 0])
+        .attr("x", (d) => x(Math.min(d.value, 0)))
+        .attr("y", (d, i) => y(i))
+        .attr("width", (d) => Math.abs(x(d.value) - x(0)))
+        .attr("height", y.bandwidth());
+
+      svg
+        .append("g")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 10)
+        .selectAll("text")
+        .data(data)
+        .join("text")
+        .attr("text-anchor", (d) => (d.value < 0 ? "end" : "start"))
+        .attr("x", (d) => x(d.value) + Math.sign(d.value - 0) * 4)
+        .attr("y", (d, i) => y(i) + y.bandwidth() / 2)
+        .attr("dy", "0.35em")
+        .text((d) => format(d.value));
+
+      svg.append("g").call(xAxis);
+      svg.append("g").call(yAxis);
+    </script>
+  </footer>
+</html>
